@@ -1,6 +1,6 @@
 #Browser Refresh
 
-Browser Refresh is a bash script to refresh all open or specific browsers.
+Browser Refresh is a cli app to refresh all open or specific browsers on a mac.
 
 ##Install
 
