@@ -14,10 +14,6 @@ Single line install:
 
 ##Usage
 
-If you want to refresh all open browsers:
-
-`browser-refresh`
-
 If you want to refresh chrome:
 
 `browser-refresh --browsers chrome`
@@ -33,9 +29,9 @@ If you want to just refresh css files:
 ##Browsers Supported
 
 - chrome
+- chrome-canary
 
 ##Todo
 
 - safari
-- chrome-canary
 - firefox
