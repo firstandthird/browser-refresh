@@ -3,16 +3,21 @@
 VERSION="0.1.0"
 REPO=git://github.com/firstandthird/browser-refresh.git
 BROWSERS="all"
-SUPPORTED_BROWSERS="chrome"
+SUPPORTED_BROWSERS="chrome,chrome-canary"
 CSS=0
 
 refresh_chrome() {
+  type=$1
   if [ "$CSS" == 0 ]; then
-    echo "Refreshing Google Chrome"
-    osascript -e 'tell application "Google Chrome" to reload active tab of window 1'
+    echo "Refreshing $type"
+    osascript <<EOL
+      tell application "$type" to reload active tab of window 1
+EOL
   else
-    echo "Refreshing Google Chrome (css only)"
-    osascript -e "tell application \"Google Chrome\" to execute front window's active tab javascript \"javascript:void(function(){var i,a,s;a=document.getElementsByTagName('link');for(i=0;i<a.length;i++){s=a[i];if(s.rel.toLowerCase().indexOf('stylesheet')>=0&&s.href) {var h=s.href.replace(/(&|%5C?)forceReload=\\\d+/,'');s.href=h+(h.indexOf('?')>=0?'&':'?')+'forceReload='+(new Date().valueOf())}}})();\""
+    echo "Refreshing $type (css only)"
+    osascript <<EOL
+      tell application "$type" to execute front window's active tab javascript "javascript:void(function(){var i,a,s;a=document.getElementsByTagName('link');for(i=0;i<a.length;i++){s=a[i];if(s.rel.toLowerCase().indexOf('stylesheet')>=0&&s.href) {var h=s.href.replace(/(&|%5C?)forceReload=\\\d+/,'');s.href=h+(h.indexOf('?')>=0?'&':'?')+'forceReload='+(new Date().valueOf())}}})();"
+EOL
   fi
 }
 
@@ -27,7 +32,10 @@ refresh() {
   for x in $arr; do
     case $x in
       chrome)
-        refresh_chrome
+        refresh_chrome "Google Chrome"
+        ;;
+      chrome-canary)
+        refresh_chrome "Google Chrome Canary"
         ;;
     esac
   done
