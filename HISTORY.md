@@ -1,4 +1,11 @@
 
+0.2.0 / 2013-09-09 
+==================
+
+  * updated readme
+  * removed all temporarily
+  * add chrome canary support
+
 0.1.0 / 2013-09-08 
 ==================
 
