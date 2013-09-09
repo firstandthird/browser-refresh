@@ -1,6 +1,7 @@
 #!/bin/bash
 
 VERSION="0.1.0"
+REPO=git://github.com/firstandthird/browser-refresh.git
 BROWSERS="all"
 CSS=0
 
@@ -36,10 +37,23 @@ usage() {
     -b, --browsers <browsers>   which browsers to refresh (comma separated), defaults to all
     -c, --css                   just refresh css files
     -V, --version               output program version
+    --update                    update browser-updater to latest version 
     -h, --help                  output help information
 
 
 EOF
+}
+
+update() {
+  echo "updating browser-refresh(1)"
+  rm -fr /tmp/browser-refresh
+  git clone $REPO \
+      --depth 0 \
+      /tmp/browser-refresh \
+      &> /tmp/browser-refresh.log \
+    && cd /tmp/browser-refresh \
+    && make install \
+    && echo "updated $VERSION -> `browser-refresh --version`"
 }
 
 while test $# -ne 0; do
@@ -59,6 +73,10 @@ while test $# -ne 0; do
       ;;
     -c|--css)
       CSS=1
+      ;;
+    --update)
+      update
+      exit
       ;;
   esac
 done
