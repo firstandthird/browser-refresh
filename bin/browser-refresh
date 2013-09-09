@@ -2,7 +2,7 @@
 
 VERSION="0.1.0"
 REPO=git://github.com/firstandthird/browser-refresh.git
-BROWSERS="all"
+BROWSERS=""
 SUPPORTED_BROWSERS="chrome,chrome-canary"
 CSS=0
 
@@ -23,6 +23,10 @@ EOL
 
 refresh() {
 
+  if [ -z "$BROWSERS" ]; then
+    echo "Must pass in a browser"
+    exit 1;
+  fi
   if [ "$BROWSERS" == "all" ]; then
     BROWSERS=$SUPPORTED_BROWSERS
   fi
@@ -49,7 +53,7 @@ usage() {
 
   Options:
 
-    -b, --browsers <browsers>   which browsers to refresh (comma separated), defaults to all
+    -b, --browsers <browsers>   which browsers to refresh (comma separated)
     -c, --css                   just refresh css files
     -V, --version               output program version
     --update                    update browser-updater to latest version 
