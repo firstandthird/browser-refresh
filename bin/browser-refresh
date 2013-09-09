@@ -1,0 +1,66 @@
+#!/bin/bash
+
+VERSION="0.1.0"
+BROWSERS="all"
+CSS=0
+
+refresh_chrome() {
+  if [ "$CSS" == 0 ]; then
+    osascript -e 'tell application "Google Chrome" to reload active tab of window 1'
+  else
+    osascript -e "tell application \"Google Chrome\" to execute front window's active tab javascript \"javascript:void(function(){var i,a,s;a=document.getElementsByTagName('link');for(i=0;i<a.length;i++){s=a[i];if(s.rel.toLowerCase().indexOf('stylesheet')>=0&&s.href) {var h=s.href.replace(/(&|%5C?)forceReload=\\\d+/,'');s.href=h+(h.indexOf('?')>=0?'&':'?')+'forceReload='+(new Date().valueOf())}}})();\""
+  fi
+}
+
+refresh() {
+
+  arr=$(echo $BROWSERS | tr "," "\n")
+
+  for x in $arr; do
+    case $x in
+      chrome)
+        refresh_chrome
+        ;;
+    esac
+  done
+
+}
+
+usage() {
+  cat <<-EOF
+
+  Usage: browser-refresh [options]
+
+  Options:
+
+    -b, --browsers <browsers>   which browsers to refresh (comma separated), defaults to all
+    -c, --css                   just refresh css files
+    -V, --version               output program version
+    -h, --help                  output help information
+
+
+EOF
+}
+
+while test $# -ne 0; do
+  arg=$1
+  shift
+  case $arg in
+    -h|--help)
+      usage
+      exit
+      ;;
+    -V|--version)
+      echo $VERSION
+      exit
+      ;;
+    -b|--browsers)
+      BROWSERS=$1
+      ;;
+    -c|--css)
+      CSS=1
+      ;;
+  esac
+done
+
+refresh
